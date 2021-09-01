@@ -6,6 +6,7 @@ import MainPages from './components/mainpages/Pages'
 import Footer from './components/footers/Footer';
 
 
+
 function App() {
   return (
     <DataProvider>

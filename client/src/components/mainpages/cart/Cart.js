@@ -3,6 +3,7 @@ import {GlobalState} from '../../../GlobalState'
 import axios from 'axios'
 // import PaypalButton from './PaypalButton'
 import { Button } from 'reactstrap'
+import { ToastContainer, toast } from 'react-toastify';
 
 function Cart() {
     const state = useContext(GlobalState)
@@ -70,6 +71,17 @@ function Cart() {
 
     return (
         <div>
+            <ToastContainer
+            position="top-center"
+            autoClose={2000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover={false}
+            />
             {
                 cart.map(product => (
                     <div className="detail cart" key={product._id}>

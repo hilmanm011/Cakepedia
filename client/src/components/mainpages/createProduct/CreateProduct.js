@@ -2,7 +2,8 @@ import React, {useState, useContext, useEffect} from 'react'
 import axios from 'axios'
 import {GlobalState} from '../../../GlobalState'
 import Loading from '../utils/loading/Loading'
-import {useHistory, useParams} from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
 
 const initialState = {
     product_id: '',
@@ -50,16 +51,49 @@ function CreateProduct() {
     const handleUpload = async e =>{
         e.preventDefault()
         try {
-            if(!isAdmin) return alert("You're not an admin")
+            if (!isAdmin)
+                return toast.error('You are not admin!', {
+                    position: "bottom-center",
+                    autoClose: false,
+                    hideProgressBar: true,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    });
             const file = e.target.files[0]
             
-            if(!file) return alert("File not exist.")
+            if(!file) return toast.error('File not exist!', {
+                position: "bottom-center",
+                autoClose: false,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
 
             if(file.size > 1024 * 1024) // 1mb
-                return alert("Size too large!")
+                return toast.error('Size too large!', {
+                    position: "bottom-center",
+                    autoClose: false,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    });
 
             if(file.type !== 'image/jpeg' && file.type !== 'image/png') // 1mb
-                return alert("File format is incorrect.")
+                return toast.error('File format is incorrect!', {
+                    position: "bottom-center",
+                    autoClose: false,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    });
 
             let formData = new FormData()
             formData.append('file', file)
@@ -78,7 +112,16 @@ function CreateProduct() {
 
     const handleDestroy = async () => {
         try {
-            if(!isAdmin) return alert("You're not an admin")
+            if (!isAdmin)
+                return toast.error('You are not admin!', {
+                    position: "bottom-center",
+                    autoClose: false,
+                    hideProgressBar: true,
+                    closeOnClick: false,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    });
             setLoading(true)
             await axios.post('/api/destroy', {public_id: images.public_id}, {
                 headers: {Authorization: token}
@@ -98,8 +141,24 @@ function CreateProduct() {
     const handleSubmit = async e =>{
         e.preventDefault()
         try {
-            if(!isAdmin) return alert("You're not an admin")
-            if(!images) return alert("No Image Upload")
+            if(!isAdmin) return toast.error('You are not admin!', {
+                position: "bottom-center",
+                autoClose: false,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
+            if(!images) return toast.error('No Image Upload!', {
+                position: "bottom-center",
+                autoClose: false,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
 
             if(onEdit){
                 await axios.put(`/api/products/${product._id}`, {...product, images}, {
@@ -111,7 +170,19 @@ function CreateProduct() {
                 })
             }
             setCallback(!callback)
+
             history.push("/")
+            toast.success('Succeed!', {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
+
+
         } catch (err) {
             alert(err.response.data.msg)
         }

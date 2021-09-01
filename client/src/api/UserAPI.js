@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function UserAPI(token) {
@@ -35,7 +36,16 @@ function UserAPI(token) {
 
 
     const addCart = async (product) => {
-        if(!isLogged) return alert("Please login to continue buying!")
+        if(!isLogged) return toast.warn('Please login to continue buying!', {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+        });
+        // alert("Please login to continue buying!")
 
         const check = cart.every(item =>{
             return item._id !== product._id
@@ -48,10 +58,29 @@ function UserAPI(token) {
                 headers: { Authorization: token }
             })
 
-            alert('Successfully added to cart!')
+            toast.success('Successfully added to cart!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
 
-        }else{
-            alert("This has been added to your cart!")
+            // alert('Successfully added to cart!')
+
+        } else {
+            toast.warn('This has been added to your cart!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                });
+            // alert("This has been added to your cart!")
         }
     }
 

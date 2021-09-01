@@ -1,7 +1,9 @@
 import React from 'react'
 import BtnRender from './BtnRender'
 
+
 function ProductItem({product, isAdmin, deleteProduct, handleCheck}) {
+
 
     return (
         <div className="product_card">
@@ -16,7 +18,6 @@ function ProductItem({product, isAdmin, deleteProduct, handleCheck}) {
                 <span style={{fontWeight:'700'}}>Rp. {product.price}</span>
                 <p className="text-muted">{product.description}</p>
             </div>
-
             
             <BtnRender product={product} deleteProduct={deleteProduct} />
         </div>
