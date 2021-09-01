@@ -1,120 +1,141 @@
-import React, {useContext, useState, useEffect} from 'react'
-import {GlobalState} from '../../../GlobalState'
-import axios from 'axios'
+import React, { useContext, useState, useEffect } from 'react';
+import { GlobalState } from '../../../GlobalState';
+import axios from 'axios';
 // import PaypalButton from './PaypalButton'
-import { Button } from 'reactstrap'
+import { Button } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 
 function Cart() {
-    const state = useContext(GlobalState)
-    const [cart, setCart] = state.userAPI.cart
-    const [token] = state.token
-    const [total, setTotal] = useState(0)
+  const state = useContext(GlobalState);
+  const [cart, setCart] = state.userAPI.cart;
+  const [token] = state.token;
+  const [total, setTotal] = useState(0);
 
-    useEffect(() =>{
-        const getTotal = () =>{
-            const total = cart.reduce((prev, item) => {
-                return prev + (item.price * item.quantity)
-            },0)
+  useEffect(() => {
+    const getTotal = () => {
+      const total = cart.reduce((prev, item) => {
+        return prev + item.price * item.quantity;
+      }, 0);
 
-            setTotal(total)
+      setTotal(total);
+    };
+
+    getTotal();
+  }, [cart]);
+
+  const addToCart = async cart => {
+    await axios.patch(
+      '/user/addcart',
+      { cart },
+      {
+        headers: { Authorization: token },
+      }
+    );
+  };
+
+  const increment = id => {
+    cart.forEach(item => {
+      if (item._id === id) {
+        item.quantity += 1;
+      }
+    });
+
+    setCart([...cart]);
+    addToCart(cart);
+  };
+
+  const decrement = id => {
+    cart.forEach(item => {
+      if (item._id === id) {
+        item.quantity === 1 ? (item.quantity = 1) : (item.quantity -= 1);
+      }
+    });
+
+    setCart([...cart]);
+    addToCart(cart);
+  };
+
+  const removeProduct = id => {
+    if (window.confirm('Do you want to delete this product?')) {
+      cart.forEach((item, index) => {
+        if (item._id === id) {
+          cart.splice(index, 1);
         }
+      });
 
-        getTotal()
-
-    },[cart])
-
-    const addToCart = async (cart) =>{
-        await axios.patch('/user/addcart', {cart}, {
-            headers: {Authorization: token}
-        })
+      setCart([...cart]);
+      addToCart(cart);
     }
+  };
 
-
-    const increment = (id) =>{
-        cart.forEach(item => {
-            if(item._id === id){
-                item.quantity += 1
-            }
-        })
-
-        setCart([...cart])
-        addToCart(cart)
-    }
-
-    const decrement = (id) =>{
-        cart.forEach(item => {
-            if(item._id === id){
-                item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1
-            }
-        })
-
-        setCart([...cart])
-        addToCart(cart)
-    }
-
-    const removeProduct = id =>{
-        if(window.confirm("Do you want to delete this product?")){
-            cart.forEach((item, index) => {
-                if(item._id === id){
-                    cart.splice(index, 1)
-                }
-            })
-
-            setCart([...cart])
-            addToCart(cart)
-        }
-    }
-
-    if(cart.length === 0) 
-        return <h2 style={{textAlign: "center", fontSize: "5rem"}}>Cart Empty</h2> 
-
+  if (cart.length === 0)
     return (
-        <div>
-            <ToastContainer
-            position="top-center"
-            autoClose={2000}
-            hideProgressBar
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            />
-            {
-                cart.map(product => (
-                    <div className="detail cart" key={product._id}>
-                        <img src={product.images.url} alt="" />
+      <h2 style={{ textAlign: 'center', fontSize: '5rem' }}>Cart Empty</h2>
+    );
 
-                        <div className="box-detail">
-                            <h2>{product.title}</h2>
+  return (
+    <div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
+      {cart.map(product => (
+        <div className="detail cart" key={product._id}>
+          <img src={product.images.url} alt="" />
 
-                            <h3>Rp. {product.price * product.quantity}</h3>
-                            <p>{product.description}</p>
-                            <p>{product.content}</p>
+          <div className="box-detail">
+            <h2>{product.title}</h2>
 
-                            <div className='amount'>
-                                <Button outline color="secondary" onClick={() => decrement(product._id)}> - </Button>
-                                <span style={{fontWeight:'700'}} >{product.quantity}</span>
-                                <Button outline color="primary" onClick={() => increment(product._id)}> + </Button>
-                            </div>
-                            
-                            <Button color='danger' className="delete" 
-                            onClick={() => removeProduct(product._id)}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                ))
-            }
+            <h3>Rp. {product.price * product.quantity}</h3>
+            <p>{product.description}</p>
+            <p>{product.content}</p>
 
-            <div className="total">
-                <h3>Total: <span> Rp. {total} </span></h3>
-                <Button color="primary">Checkout Now</Button>
+            <div className="amount">
+              <Button
+                outline
+                color="danger"
+                onClick={() => decrement(product._id)}
+              >
+                {' '}
+                -{' '}
+              </Button>
+              <span style={{ fontWeight: '700' }}>{product.quantity}</span>
+              <Button
+                outline
+                color="info"
+                onClick={() => increment(product._id)}
+              >
+                {' '}
+                +{' '}
+              </Button>
             </div>
+
+            <Button
+              color="danger"
+              className="delete"
+              onClick={() => removeProduct(product._id)}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
-    )
+      ))}
+
+      <div className="total">
+        <h3>
+          Total: <span> Rp. {total} </span>
+        </h3>
+        <Button color="primary">Checkout Now</Button>
+      </div>
+    </div>
+  );
 }
 
-export default Cart
+export default Cart;

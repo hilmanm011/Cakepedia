@@ -12,7 +12,6 @@ import {
   CardImg,
   Container,
 } from 'reactstrap';
-import { ToastContainer, toast } from 'react-toastify';
 
 function Register() {
   const [user, setUser] = useState({

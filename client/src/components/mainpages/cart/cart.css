@@ -1,3 +1,7 @@
+.detail .cart img {
+    width: 150;
+    height: 150;
+}
 .cart{
     position: relative;
     border: 1px solid #ccc;
@@ -10,7 +14,7 @@
 .amount button{
     width: 40px;
     height: 40px;
-    border: 1px solid #777;
+    border: 1px solid rgb(17, 17, 17);
     font-weight: 700;
 }
 .delete{
@@ -19,9 +23,9 @@
     right: 5px;
     font-weight: 900;
     cursor: pointer;
-    font-size: 20pt;
+    font-size: 15pt;
     margin: 5px;
-    margin-right: 25px;
+    /* margin-right: 25px; */
 }
 .total{
     width: 100%;

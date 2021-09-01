@@ -26,7 +26,7 @@
 }
 
 /* ------------ Filters Menu ----------------- */
-.filter_menu{
+/* .filter_menu{
     width: 100%;
     min-height: 40px;
     overflow: hidden;
@@ -45,21 +45,24 @@
 .filter_menu input{
     flex: 1;
     margin: 0 10px;
-}
+} */
 
 /* -------------------- Load More --------------- */
 .load_more{
     text-align: center;
+    
 }
 .load_more button{
-    padding: 10px 25px;
-    margin-bottom: 20px;
+    padding: auto;
+    margin: 10px;
     border: 1px solid #005A8D;
     text-transform: capitalize;
+    font-size: 10pt;
+
 }
 .btn-submit{
-    padding: 10px 25px;
-    margin-bottom: 20px;
+    padding: auto;
+    margin: 10px;
     border: 1px solid #005A8D;
     text-transform: capitalize;
 }
