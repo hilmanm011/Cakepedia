@@ -132,7 +132,13 @@ function Cart() {
         <h3>
           Total: <span> Rp. {total} </span>
         </h3>
-        <Button color="primary">Checkout Now</Button>
+        <Button
+          href="https://wa.me/6289671338220?text=Nama%3A%0ANo.%20HP%3A%0AAlamat%3A%0APesanan%3A%0AJumlah%3A"
+          color="primary"
+          target="_blank"
+        >
+          Order now
+        </Button>
       </div>
     </div>
   );

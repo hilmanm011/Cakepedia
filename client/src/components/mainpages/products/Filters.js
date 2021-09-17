@@ -33,7 +33,7 @@ function Filters() {
                   value={category}
                   onChange={handleCategory}
                 >
-                  <option value="">All Cakes</option>
+                  <option value="">All Product</option>
                   {categories.map(category => (
                     <option
                       value={'category=' + category._id}
